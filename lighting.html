@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Lighting board debugging and reliability case study by Tristan Surajbali." />
+<title>Lighting Board Debugging &amp; Reliability | Tristan Surajbali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sheet-frame"><span class="tick-tl">TS-PORTFOLIO</span><span class="tick-br">SHEET 3 OF 4</span></div>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">Tristan Surajbali<span class="dot">.</span></a>
+      <div class="nav-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="mailto:tsurajbali@wisc.edu">Email</a>
+      </div>
+      <div class="nav-rev">REV&nbsp;B</div>
+    </div>
+  </nav>
+
+  <header class="project-hero">
+    <div class="container">
+      <div class="ph-top">
+        <div>
+          <div class="ph-eyebrow">Badger Solar Racing &middot; Low Voltage System</div>
+          <h1>Lighting Board Debugging &amp; Reliability</h1>
+          <p class="lede">Systematic fault isolation and repair across seven CAN-connected lighting boards &mdash; the board design itself was inherited; my work was testing, debugging, repairing, and revalidating it.</p>
+          <div class="pt-tags" style="margin-top:20px;">
+            <span class="chip">Fault-tree analysis</span>
+            <span class="chip">Multimeter debug</span>
+            <span class="chip">Reflow &amp; rework</span>
+            <span class="chip">CAN</span>
+          </div>
+        </div>
+        <div class="sheet-tag"><strong>LIGHTING</strong>Sheet 3 of 4<br>Low Voltage System</div>
+      </div>
+      <div class="pd-figure dark" style="margin-bottom:-1px;">
+        <img src="assets/lighting-3d.png" alt="Lighting control board 3D render" style="max-height:420px; object-fit:contain; width:100%; padding:20px 0;" />
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Overview / ownership -->
+    <section class="pd-section">
+      <div class="container">
+        <div class="pd-num">SCOPE</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:680px;">Seven boards, one inherited design, multiple possible failure domains.</h2>
+        <p style="color:var(--muted); max-width:66ch; margin-top:10px; font-size:15px;">The lighting system used multiple identical control boards distributed around the vehicle. I did not design this board &mdash; my work was testing, debugging, repairing, and validating it. A failed unit could present as a power issue, MCU problem, CAN communication failure, output-stage fault, or connector/harness problem, so I used systematic testing and fault-tree reasoning to narrow the failure domain before touching a soldering iron.</p>
+
+        <div class="ownership-split">
+          <div class="own-col mine">
+            <div class="own-label">My contribution</div>
+            <ul>
+              <li>Tested and debugged seven lighting boards using fault-tree analysis</li>
+              <li>Checked boards for shorts and measured power rails</li>
+              <li>Reflowed MCU solder joints, replaced failed MCUs</li>
+              <li>Replaced failed LDO regulators and CAN transceivers</li>
+              <li>Replaced a failed CAN transceiver on the PDC during broader LV troubleshooting</li>
+              <li>Replaced failed harness and enclosure connectors</li>
+              <li>Revalidated repaired boards on the bench and in the vehicle</li>
+            </ul>
+          </div>
+          <div class="own-col inherited">
+            <div class="own-label">Inherited design</div>
+            <ul>
+              <li>Lighting board schematic and PCB layout</li>
+              <li>MCU firmware and CAN protocol definitions</li>
+              <li>Enclosure and harness design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Layout figure -->
+    <section class="pd-section">
+      <div class="container pd-grid">
+        <div class="pd-copy">
+          <div class="pd-num">BOARD CONTEXT</div>
+          <h2>What's on the board.</h2>
+          <p>Each unit combines an MCU, a CAN transceiver for network communication, an LDO regulator for local power, and driver outputs for the lighting elements &mdash; all inherited from the existing design. Identifying which of these had failed, per board, was most of the work.</p>
+        </div>
+        <div class="pd-figure dark">
+          <img data-zoom src="assets/lighting-layout.png" alt="Lighting board PCB layout" />
+          <div class="pd-caption">FIG. 01 &mdash; Lighting board PCB layout: MCU, CAN transceiver, LDO regulator, and output drivers.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debug flow -->
+    <section class="pd-section">
+      <div class="container">
+        <div class="pd-num">DEBUG FLOW</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:30px;">From symptom to fault domain to component.</h2>
+        <div class="timeline">
+          <div class="tl-step"><h3>Observe symptoms</h3><p>Recorded how each board actually failed &mdash; no output, no CAN response, intermittent behavior &mdash; before touching anything.</p></div>
+          <div class="tl-step"><h3>Divide fault domains</h3><p>Narrowed to power, MCU, CAN, output stage, or connector/harness before further testing.</p></div>
+          <div class="tl-step"><h3>Test &amp; isolate</h3><p>Used continuity, resistance, and rail checks to find shorts and isolate the failing component within its domain.</p></div>
+          <div class="tl-step"><h3>Repair &amp; revalidate</h3><p>Reflowed, replaced, or rewired as needed, then rechecked the board on the bench and in the vehicle.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Repairs performed -->
+    <section class="pd-section">
+      <div class="container">
+        <div class="pd-num">REPAIRS PERFORMED</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:30px;">Different failures, different fixes.</h2>
+        <div class="feature-grid">
+          <div class="feature-cell">
+            <div class="fc-tag">MCU</div>
+            <h3>Reflow &amp; replacement</h3>
+            <p>Reflowed suspect MCU joints and replaced failed microcontrollers where the fault was isolated to the controller.</p>
+          </div>
+          <div class="feature-cell">
+            <div class="fc-tag">POWER</div>
+            <h3>LDO replacement</h3>
+            <p>Replaced failed low-dropout regulators when rail behavior indicated a local power-conversion failure.</p>
+          </div>
+          <div class="feature-cell">
+            <div class="fc-tag">CAN</div>
+            <h3>Transceiver replacement</h3>
+            <p>Replaced failed CAN transceivers on lighting boards, and separately repaired a failed CAN transceiver on the PDC.</p>
+          </div>
+          <div class="feature-cell">
+            <div class="fc-tag">INTERCONNECT</div>
+            <h3>Connector repair</h3>
+            <p>Replaced failed connectors on the wiring harness and board enclosure when the issue was outside the PCB itself.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What this demonstrated -->
+    <section class="pd-section">
+      <div class="container pd-grid reverse">
+        <div class="pd-copy">
+          <div class="pd-num">TAKEAWAY</div>
+          <h2>Debugging a system, not just a schematic.</h2>
+          <p>A board-level symptom doesn't always originate on the board. By checking rails, logic, communication, and interconnects in a consistent order, I could separate component failures from harness or enclosure faults and avoid unnecessary rework.</p>
+          <p>This complemented my PDC Rev B work: one project was circuit redesign and bring-up, the other was systematic diagnosis and repair of existing hardware.</p>
+        </div>
+        <div class="pd-figure dark">
+          <img data-zoom src="assets/lighting-3d.png" alt="Lighting board 3D model" />
+          <div class="pd-caption">FIG. 02 &mdash; 3D render of the inherited lighting board hardware.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vehicle validation -->
+    <section class="result-band">
+      <div class="container result-grid">
+        <div class="pd-copy">
+          <div class="pd-num">VEHICLE VALIDATION</div>
+          <h2>Checked in the system it actually runs in.</h2>
+          <p>Repairs were verified progressively before final vehicle use, so a board that worked on the bench also had to communicate and behave correctly once connected to the rest of the low-voltage architecture &mdash; and hold up through competition running.</p>
+        </div>
+        <div class="pd-figure dark">
+          <img data-zoom src="assets/solar-car-track-wide.jpeg" alt="Badger Solar Racing car driving on track" />
+          <div class="pd-caption">FIG. 03 &mdash; The electrical system had to perform in a moving racecar, not only on the bench.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="container">
+    <div class="pd-nav">
+      <a href="pdc.html">&larr; Back: PDC Rev B</a>
+      <a href="fan.html">Next: Temperature-Controlled Fan &rarr;</a>
+    </div>
+  </div>
+
+  <div class="modal" aria-hidden="true"><button aria-label="Close">&times;</button><img alt="" /></div>
+  <script src="script.js"></script>
+</body>
+</html>

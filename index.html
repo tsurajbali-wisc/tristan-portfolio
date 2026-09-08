@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Tristan Surajbali — electrical engineering student focused on PCB design, power electronics, and hardware debugging." />
+<title>Tristan Surajbali | Electrical Engineering Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sheet-frame"><span class="tick-tl">TS-PORTFOLIO</span><span class="tick-br">SHEET 1 OF 4</span></div>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">Tristan Surajbali<span class="dot">.</span></a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="mailto:tsurajbali@wisc.edu">Email</a>
+      </div>
+      <div class="nav-rev">REV&nbsp;B</div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker">ELECTRICAL ENGINEERING <span>·</span> UW&ndash;MADISON</div>
+          <h1>Hardware built for real systems.</h1>
+          <p class="hero-lede">Electrical engineering student focused on hardware design, PCB development, power electronics, and hands-on system integration.</p>
+          <div class="actions">
+            <a class="btn primary" href="#projects">View projects</a>
+            <a class="btn" href="resume.pdf">Resume</a>
+            <a class="btn" href="https://www.linkedin.com/in/tristan-surajbali/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn accent" href="mailto:tsurajbali@wisc.edu">Email</a>
+          </div>
+        </div>
+        <div class="figure-box">
+          <img src="assets/solar-car-track.jpeg" alt="Badger Solar Racing car on track at competition" />
+          <div class="figure-cap"><span>FIG. 01</span><span>Badger Solar Racing, FSGP 2026</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="titleblock">
+      <div class="tb-cell">
+        <div class="tb-label">Name</div>
+        <div class="tb-value">Tristan Surajbali</div>
+      </div>
+      <div class="tb-cell">
+        <div class="tb-label">Program</div>
+        <div class="tb-value">B.S. Electrical Engineering, UW&ndash;Madison
+          <span class="tb-sub">Expected May 2028 &middot; GPA 3.55<br>Dean's List &times;3 &middot; Mercile J. Lee Scholar &middot; STAR Scholar</span>
+        </div>
+      </div>
+      <div class="tb-cell">
+        <div class="tb-label">Seeking</div>
+        <div class="tb-value">Hardware / power electronics internships</div>
+      </div>
+      <div class="tb-cell">
+        <div class="tb-label">Contact</div>
+        <div class="tb-value"><a href="mailto:tsurajbali@wisc.edu">tsurajbali@wisc.edu</a></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-num mono">01 &mdash; FEATURED WORK</div>
+            <h2 style="margin-top:8px;">Badger Solar Racing</h2>
+          </div>
+          <p>Design and debugging work on the low-voltage electrical system, with an emphasis on what I personally owned versus what I inherited and validated.</p>
+        </div>
+
+        <div class="project-list">
+          <a class="project-tile" href="pdc.html">
+            <div class="pt-media"><img src="assets/pdc-hand.jpeg" alt="PDC Rev B assembled PCB held in hand" /></div>
+            <div class="pt-body">
+              <div class="pt-sheet">SHEET 01 &mdash; POWER DISTRIBUTION &amp; CONTROL</div>
+              <h3>PDC Rev B</h3>
+              <p>Redesigned the 12&nbsp;V&rarr;5&nbsp;V power conversion, current telemetry, and input protection on Badger Solar Racing's low-voltage control board, and took it through bench, lab, and in-car validation.</p>
+              <div class="pt-tags">
+                <span class="chip">Altium Designer</span>
+                <span class="chip">Buck Converter</span>
+                <span class="chip">Current Sense</span>
+                <span class="chip">CAN</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project-tile" href="lighting.html">
+            <div class="pt-media"><img src="assets/lighting-3d.png" alt="Lighting control board 3D render" /></div>
+            <div class="pt-body">
+              <div class="pt-sheet">SHEET 02 &mdash; RELIABILITY &amp; DEBUG</div>
+              <h3>Lighting Board Debugging &amp; Reliability</h3>
+              <p>Tested, isolated, and repaired faults across seven CAN-connected lighting boards using structured fault-tree analysis, from board shorts to failed ICs and harness connectors.</p>
+              <div class="pt-tags">
+                <span class="chip">Fault-tree analysis</span>
+                <span class="chip">Multimeter debug</span>
+                <span class="chip">Rework</span>
+                <span class="chip">CAN</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project-tile" href="fan.html">
+            <div class="pt-media pending">
+              <div class="pending-inner"><strong>PHOTOS PENDING</strong>PCB in assembly &mdash; renders &amp; bench photos to follow</div>
+            </div>
+            <div class="pt-body">
+              <div class="pt-sheet">SHEET 03 &mdash; PERSONAL PROJECT</div>
+              <h3>Temperature-Controlled Fan</h3>
+              <p>Designed a custom STM32 PCB from scratch: protected 12&nbsp;V input, buck regulation, temperature sensing, and MOSFET PWM control of a 6&nbsp;W brushless fan, with current fault detection.</p>
+              <div class="pt-tags">
+                <span class="chip">STM32</span>
+                <span class="chip">Buck Regulation</span>
+                <span class="chip">PWM Control</span>
+                <span class="chip">Oscilloscope</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-num mono">02 &mdash; PROGRAM RESULTS</div>
+            <h2 style="margin-top:8px;">2026 season, by the numbers</h2>
+          </div>
+          <p>Team-level outcomes from the low-voltage system I contributed to &mdash; not a claim that any single board produced them.</p>
+        </div>
+        <div class="spec-table">
+          <div class="spec-head"><span>Parameter</span><span>Value</span></div>
+          <div class="spec-row"><span class="param">Lighting boards tested and repaired</span><span class="val">7</span></div>
+          <div class="spec-row"><span class="param">PDC buck stage redesigned</span><span class="val">12&nbsp;V &rarr; 5&nbsp;V</span></div>
+          <div class="spec-row"><span class="param">Distance completed at FSGP 2026</span><span class="val">200+ mi, zero LV failures</span></div>
+          <div class="spec-row"><span class="param">SOV class finish, FSGP 2026</span><span class="val">16th of 36</span></div>
+          <div class="spec-row"><span class="param">ASC qualification</span><span class="val">1st in team history</span></div>
+          <div class="spec-row"><span class="param">PDC buck-stage footprint reduction</span><span class="val">~60%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-num mono">03 &mdash; EXPERIENCE</div>
+            <h2 style="margin-top:8px;">Where I've worked</h2>
+          </div>
+          <p>Racecar electronics and renewable-energy field operations.</p>
+        </div>
+
+        <div class="rev-log">
+          <div class="rev-head"><span>Rev</span><span>Role</span></div>
+
+          <div class="rev-row">
+            <div>
+              <div class="rev-tag">B</div>
+              <span class="rev-when">2025 &ndash; present</span>
+            </div>
+            <div>
+              <h3>Low Voltage Project Lead &mdash; Badger Solar Racing</h3>
+              <div class="rev-org">Student engineering team, UW&ndash;Madison</div>
+              <ul>
+                <li>Lead technical development of the low-voltage system: primary point of contact for design decisions, debugging, and mentoring members through PCB development, testing, and integration</li>
+                <li>Revised the PDC schematic and PCB in Altium &mdash; regulated power distribution, CAN communication, current/voltage telemetry, circuit protection, and motor-controller interfaces</li>
+                <li>Ran component trade studies to select a 3&nbsp;A synchronous buck converter, cutting the power stage's footprint ~60% and reclaiming board space for telemetry and input protection</li>
+                <li>Simulated and validated voltage-regulation circuitry in Spice, evaluating MOSFET alternatives before PCB implementation and bench testing</li>
+                <li>Resolved CAN and lighting faults using fault-tree analysis and DMM continuity/impedance measurements &mdash; 200+ competition miles with zero LV failures and the team's first ASC qualification</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="rev-row">
+            <div>
+              <div class="rev-tag">A</div>
+              <span class="rev-when">Summer 2026</span>
+            </div>
+            <div>
+              <h3>Renewable Engineering Intern &mdash; Madison Gas &amp; Electric</h3>
+              <div class="rev-org">Utility-scale renewable energy operations</div>
+              <ul>
+                <li>Developed remote-access procedures for tracker and inverter controls and implemented equipment tracking for 5,000+ renewable-energy assets, cutting maintenance time ~40%</li>
+                <li>Led root-cause investigations across 10+ solar sites using SCADA monitoring, thermal imaging, drone inspection data, and field testing</li>
+                <li>Commissioned EV charging equipment across a fleet of 140+ public chargers, running functional test charges and verifying hardware/network connectivity</li>
+                <li>Analyzed BESS control systems through Tesla Megapack O&amp;M and RTAC troubleshooting, supporting utility-scale storage controls and monitoring</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact" id="skills">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-num mono">04 &mdash; SKILLS</div>
+            <h2 style="margin-top:8px;">Tools &amp; technical grounding</h2>
+          </div>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h3>Hardware / EE</h3>
+            <ul>
+              <li>PCB design &amp; assembly</li>
+              <li>Schematic capture &amp; board bring-up</li>
+              <li>Soldering &amp; rework</li>
+              <li>Oscilloscope &amp; multimeter debugging</li>
+              <li>Power conversion</li>
+              <li>Fault-tree analysis</li>
+              <li>CAN, I&sup2;C, isoSPI, USB</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Software &amp; Tools</h3>
+            <ul>
+              <li>Altium Designer</li>
+              <li>Spice</li>
+              <li>MATLAB</li>
+              <li>STM32 / Nucleo</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Programming</h3>
+            <ul>
+              <li>C</li>
+              <li>Python</li>
+              <li>Java</li>
+              <li>Verilog</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container">
+        <div class="leadership-grid">
+          <div class="leadership-item">
+            <h3>Emerging Leader</h3>
+            <div class="l-org mono">Engineering Student Scholars Program Leadership Board</div>
+            <p>One of 15 selected student leaders; mentors undergraduate engineering students and represents student feedback to College of Engineering leadership.</p>
+          </div>
+          <div class="leadership-item">
+            <h3>Music Director</h3>
+            <div class="l-org mono">Redefined Acapella</div>
+            <p>Directs a 20-member a cappella group &mdash; leads weekly rehearsals and arranges repertoire for gigs and the semester concert.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="container two-col">
+        <div class="copy">
+          <div class="kicker" style="margin-bottom:14px;">ABOUT</div>
+          <h2>I like the point where schematic design meets the bench.</h2>
+        </div>
+        <div class="copy">
+          <p>My strongest work has come from taking hardware past the schematic: selecting components, laying out boards, bringing up hardware, finding why something failed, and improving the next revision.</p>
+          <p>I'm especially interested in PCB design, power electronics, analog/hardware engineering, embedded systems, and electrical systems for EVs and aerospace.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-links">
+        <a href="mailto:tsurajbali@wisc.edu">tsurajbali@wisc.edu</a>
+        <a href="https://www.linkedin.com/in/tristan-surajbali/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="resume.pdf">Resume</a>
+      </div>
+      <div class="footer-meta">&copy; 2026 Tristan Surajbali &middot; Sheet 1/4</div>
+    </div>
+  </footer>
+</body>
+</html>

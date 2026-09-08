@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="PDC Rev B — power distribution and control board case study by Tristan Surajbali." />
+<title>PDC Rev B | Tristan Surajbali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sheet-frame"><span class="tick-tl">TS-PORTFOLIO</span><span class="tick-br">SHEET 2 OF 4</span></div>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">Tristan Surajbali<span class="dot">.</span></a>
+      <div class="nav-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="mailto:tsurajbali@wisc.edu">Email</a>
+      </div>
+      <div class="nav-rev">REV&nbsp;B</div>
+    </div>
+  </nav>
+
+  <header class="project-hero">
+    <div class="container">
+      <div class="ph-top">
+        <div>
+          <div class="ph-eyebrow">Badger Solar Racing &middot; Low Voltage Electrical</div>
+          <h1>Power Distribution &amp; Control Board &mdash; Rev B</h1>
+          <p class="lede">A central low-voltage interface for the racecar. On Rev B, I redesigned the power conversion, current telemetry, input protection, and testability, while the MCU/CAN architecture and motor-controller interface carried over from the previous revision.</p>
+          <div class="pt-tags" style="margin-top:20px;">
+            <span class="chip">Altium Designer</span>
+            <span class="chip">Power Electronics</span>
+            <span class="chip">Current Sense</span>
+            <span class="chip">STM32</span>
+            <span class="chip">CAN</span>
+          </div>
+        </div>
+        <div class="sheet-tag"><strong>PDC REV B</strong>Sheet 2 of 4<br>Low Voltage Electrical</div>
+      </div>
+      <div class="pd-figure" style="margin-bottom:-1px;">
+        <img src="assets/pdc-hand.jpeg" alt="Assembled PDC Rev B PCB held in hand" style="max-height:520px; object-fit:cover; width:100%;" />
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- A. Project overview -->
+    <section class="pd-section">
+      <div class="container pd-grid">
+        <div class="pd-copy">
+          <div class="pd-num">A &mdash; PROJECT OVERVIEW</div>
+          <h2>Where the PDC sits in the vehicle.</h2>
+          <p>The PDC sits between the low-voltage powertrain, motor controller, steering board, lighting system, pedals, horn, and CAN network. It distributes regulated power, carries control and telemetry signals, and provides the interface between the MCU and motor controller.</p>
+          <p>Rev B kept the existing MCU/CAN architecture and motor-controller interface, and focused on making the board's power delivery, observability, and protection more robust for competition use.</p>
+        </div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/pdc-system-diagram.png" alt="System-level PDC wiring diagram" />
+          <div class="pd-caption">FIG. 02 &mdash; System-level diagram: PDC in context with powertrain, motor controller, steering, lighting, pedals, and CAN.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- B. My contribution -->
+    <section class="pd-section">
+      <div class="container">
+        <div class="pd-num">B &mdash; MY CONTRIBUTION</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px;">What I redesigned versus what I inherited.</h2>
+        <p style="color:var(--muted); max-width:64ch; margin-top:10px; font-size:15px;">The MCU/CAN architecture, motor-controller interface, and several peripheral interfaces carried over from the previous board revision. My work on Rev B was scoped to the sections below.</p>
+
+        <div class="ownership-split">
+          <div class="own-col mine">
+            <div class="own-label">Redesigned by me &mdash; Rev B</div>
+            <ul>
+              <li>12&nbsp;V&nbsp;&rarr;&nbsp;5&nbsp;V buck regulator: ran component trade studies and selected a 3&nbsp;A synchronous buck converter, cutting the stage's footprint ~60%</li>
+              <li>Simulated and validated the voltage-regulation circuitry in Spice, evaluating MOSFET alternatives before committing to layout</li>
+              <li>Shunt-based current-sensing telemetry circuitry</li>
+              <li>Dedicated test points on key rails and signals</li>
+              <li>Voltage protection / regulation circuit</li>
+              <li>TVS transient protection on the input path</li>
+            </ul>
+          </div>
+          <div class="own-col inherited">
+            <div class="own-label">Inherited from previous revision</div>
+            <ul>
+              <li>MCU (STM32 Nucleo) and CAN transceiver architecture</li>
+              <li>Motor-controller interface and drive-signal opamps</li>
+              <li>Steering, pedal, horn, and lighting connector interfaces</li>
+              <li>Overall board form factor and connector layout</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- C. Power conversion -->
+    <section class="pd-section">
+      <div class="container pd-grid">
+        <div class="pd-figure">
+          <img data-zoom src="assets/pdc-power.png" alt="PDC power conversion schematic" />
+          <div class="pd-caption">FIG. 03 &mdash; Rev B power section: 12&nbsp;V input filtering and 12&nbsp;V&rarr;5&nbsp;V conversion.</div>
+        </div>
+        <div class="pd-copy">
+          <div class="pd-num">C &mdash; POWER CONVERSION</div>
+          <h2>A dedicated buck stage for the 5&nbsp;V rail.</h2>
+          <p>I ran component trade studies and selected a 3&nbsp;A synchronous buck regulator, sizing the surrounding inductor, output capacitors, and feedback network for the board's 5&nbsp;V rail. The chosen part cut the stage's footprint by roughly 60% versus the prior approach, freeing board space I used for the new current-sensing telemetry and input protection circuitry.</p>
+          <p>Before committing to layout, I simulated the voltage-regulation circuitry in Spice, evaluating MOSFET alternatives and circuit behavior under expected load conditions. In layout, I kept the switching node, inductor, and output capacitors close together to minimize loop area, and routed the high-current path directly rather than through shared ground pours, since this stage feeds logic and sensor supplies elsewhere on the board.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- D. Telemetry -->
+    <section class="pd-section">
+      <div class="container pd-grid reverse">
+        <div class="pd-copy">
+          <div class="pd-num">D &mdash; TELEMETRY</div>
+          <h2>Current and voltage telemetry for the MCU.</h2>
+          <p>I added shunt-based current sensing using dedicated current-sense amplifiers on the 12&nbsp;V and 5&nbsp;V rails, feeding the MCU so board current draw can be observed in firmware.</p>
+          <p>Combined with voltage-divider telemetry on the same rails, this gives the low-voltage system visibility it didn't have before &mdash; useful both for live monitoring and for narrowing down faults during bring-up.</p>
+        </div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/pdc-current-sense.png" alt="PDC current sensing telemetry schematic" />
+          <div class="pd-caption">FIG. 04 &mdash; Current-sense telemetry circuitry added on Rev B.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- E. Protection -->
+    <section class="pd-section">
+      <div class="container pd-grid">
+        <div class="pd-figure">
+          <img data-zoom src="assets/pdc-protection.png" alt="PDC voltage protection schematic" />
+          <div class="pd-caption">FIG. 05 &mdash; Voltage protection / regulation stage guarding the downstream board from abnormal input voltage.</div>
+        </div>
+        <div class="pd-copy">
+          <div class="pd-num">E &mdash; PROTECTION &amp; ROBUSTNESS</div>
+          <h2>Designed for faults, not just nominal operation.</h2>
+          <p>The input path includes a TVS diode and a dedicated voltage protection stage, giving the board a defined response to out-of-range supply conditions instead of relying on downstream regulators to tolerate them.</p>
+          <div class="notice"><strong>Scope note:</strong> the MCU/CAN architecture and motor-controller interface were inherited from the previous board revision &mdash; this page describes only the Rev B changes I made.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- F. Testability -->
+    <section class="pd-section">
+      <div class="container">
+        <div class="pd-num">F &mdash; TESTABILITY</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:30px;">Test points, added on purpose.</h2>
+        <div class="feature-grid">
+          <div class="feature-cell">
+            <div class="fc-tag">RAIL ACCESS</div>
+            <h3>Power rail test points</h3>
+            <p>Exposed test points on the 12&nbsp;V, 5&nbsp;V, and 3.3&nbsp;V rails so bring-up checks don't require probing fine-pitch component pads.</p>
+          </div>
+          <div class="feature-cell">
+            <div class="fc-tag">SIGNAL ACCESS</div>
+            <h3>Signal test points</h3>
+            <p>Added access on key control and telemetry signals to make fault isolation faster during bench and in-car debugging.</p>
+          </div>
+        </div>
+        <p style="color:var(--muted); font-size:14px; max-width:60ch; margin-top:18px;">The goal was straightforward: less time hunting for a probe point mid-debug, more time actually diagnosing the fault.</p>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="pd-section">
+      <div class="container">
+        <div class="pd-num">LAYOUT &amp; ASSEMBLY</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:30px;">From layout to assembled hardware.</h2>
+        <div class="gallery">
+          <div class="pd-figure dark"><img data-zoom src="assets/pdc-layout.png" alt="PDC Rev B PCB layout" /><div class="pd-caption">FIG. 06 &mdash; PCB layout: routing, placement, connectors, and test access.</div></div>
+          <div class="gallery-stack">
+            <div class="pd-figure dark"><img data-zoom src="assets/pdc-3d.jpeg" alt="PDC Rev B 3D render" /><div class="pd-caption">FIG. 07 &mdash; Altium 3D view.</div></div>
+            <div class="pd-figure dark"><img data-zoom src="assets/pdc-bench.jpeg" alt="Assembled PDC Rev B on a workbench" /><div class="pd-caption">FIG. 08 &mdash; Assembled Rev B on the bench.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- G. Validation -->
+    <section class="pd-section">
+      <div class="container">
+        <div class="pd-num">G &mdash; VALIDATION</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:30px;">Staged integration, one step at a time.</h2>
+        <div class="timeline">
+          <div class="tl-step"><h3>Bench checks</h3><p>Continuity, short, assembly, and rail checks on the standalone PCB.</p></div>
+          <div class="tl-step"><h3>Lab supply</h3><p>Powered the board from a controlled supply and verified behavior under known conditions.</p></div>
+          <div class="tl-step"><h3>LV integration</h3><p>Connected the board to the rest of the low-voltage system and checked subsystem interactions. Later replaced a failed CAN transceiver on the PDC during this stage.</p></div>
+          <div class="tl-step"><h3>In-car validation</h3><p>Completed final validation with the board installed in the vehicle.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- H. Result -->
+    <section class="result-band">
+      <div class="container result-grid">
+        <div class="pd-copy">
+          <div class="pd-num">H &mdash; RESULT</div>
+          <h2>Part of a low-voltage system that held up at competition.</h2>
+          <p>As part of the broader low-voltage system and team effort, Badger Solar Racing completed more than 200 miles at Formula Sun Grand Prix 2026 with zero LV failures, placed 16th of 36 teams in the SOV class, and qualified for the American Solar Challenge for the first time in team history.</p>
+        </div>
+        <div class="pd-figure dark">
+          <img data-zoom src="assets/bsr-team.jpeg" alt="Badger Solar Racing team with the solar car" />
+          <div class="pd-caption">FIG. 09 &mdash; Badger Solar Racing at competition.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="container">
+    <div class="pd-nav">
+      <a href="index.html">&larr; Back to portfolio</a>
+      <a href="lighting.html">Next: Lighting Board Reliability &rarr;</a>
+    </div>
+  </div>
+
+  <div class="modal" aria-hidden="true"><button aria-label="Close">&times;</button><img alt="" /></div>
+  <script src="script.js"></script>
+</body>
+</html>
