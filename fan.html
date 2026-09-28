@@ -32,16 +32,16 @@
           <h1>Temperature-Controlled Fan</h1>
           <p class="lede">A from-scratch board: protected 12&nbsp;V input, buck regulation, temperature sensing, and MOSFET PWM control of a 6&nbsp;W brushless fan, with current fault detection built in from the start.</p>
           <div class="pt-tags" style="margin-top:20px;">
-            <span class="chip">STM32</span>
+            <span class="chip">STM32G031</span>
             <span class="chip">Altium Designer</span>
-            <span class="chip">Buck Regulation</span>
-            <span class="chip">PWM Control</span>
-            <span class="chip">Oscilloscope</span>
+            <span class="chip">Buck + LDO Regulation</span>
+            <span class="chip">I&sup2;C Temp Sensing</span>
+            <span class="chip">MOSFET PWM</span>
           </div>
         </div>
         <div class="sheet-tag"><strong>FAN CONTROL</strong>Sheet 4 of 4<br>Personal Project</div>
       </div>
-      <div class="notice" style="margin: 0 0 40px;"><strong>Status:</strong> board is assembled and bringing up on the bench. Photos, PCB layout, and scope captures will replace the placeholders below as they're taken.</div>
+      <div class="notice" style="margin: 0 0 40px;"><strong>Status:</strong> schematic is complete (shown below). PCB layout, assembled board photos, and bench/scope captures will replace the remaining placeholders as they're taken.</div>
     </div>
   </header>
 
@@ -52,41 +52,106 @@
         <div class="pd-copy">
           <div class="pd-num">A &mdash; OVERVIEW</div>
           <h2>Unlike PDC and lighting, this one's fully mine.</h2>
-          <p>Where the PDC and lighting boards involved inherited architecture, this is an independent project: I designed the schematic, laid out the PCB, and brought up the hardware end to end.</p>
-          <p>The goal was a small closed-loop controller &mdash; read temperature, drive a fan proportionally, and protect itself if something goes wrong electrically &mdash; built around an STM32 rather than an off-the-shelf fan controller.</p>
+          <p>Where the PDC and lighting boards involved inherited architecture, this is an independent project: I designed the schematic, laid out the PCB, and am bringing up the hardware end to end.</p>
+          <p>The goal was a small closed-loop controller &mdash; read temperature over I&sup2;C, drive a fan proportionally by PWM, and protect itself if something goes wrong electrically &mdash; built around an STM32G031 rather than an off-the-shelf fan controller.</p>
         </div>
-        <div class="pd-figure pending">
-          <div class="pending-inner"><strong>FIG. 01 &mdash; PENDING</strong>System block diagram: 12&nbsp;V input &rarr; protection &rarr; buck stage &rarr; STM32 &rarr; PWM driver &rarr; fan</div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/fan-logic-sheet.png" alt="Fan controller logic schematic sheet" />
+          <div class="pd-caption">FIG. 01 &mdash; Logic sheet: STM32G031 MCU, I&sup2;C temperature sensor, SWD programming header, and TVS protection on the debug lines.</div>
         </div>
       </div>
     </section>
 
-    <!-- Design -->
+    <!-- Power system overview -->
+    <section class="pd-section">
+      <div class="container pd-grid reverse">
+        <div class="pd-copy">
+          <div class="pd-num">B &mdash; POWER SYSTEM</div>
+          <h2>One 12&nbsp;V input, three regulated rails.</h2>
+          <p>A single 12&nbsp;V input feeds input protection, a buck stage down to 5&nbsp;V, and an LDO down to 3.3&nbsp;V &mdash; giving the MOSFET fan drive its own rail separate from the logic and sensing supplies.</p>
+          <p>I broke each stage out with its own decoupling and a status LED, so a dead rail is visible at a glance during bring-up instead of requiring a meter first.</p>
+        </div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/fan-power-sheet.png" alt="Fan controller power schematic sheet" />
+          <div class="pd-caption">FIG. 02 &mdash; Power sheet: input protection, 12&nbsp;V&rarr;5&nbsp;V buck conversion, 5&nbsp;V&rarr;3.3&nbsp;V LDO, and MOSFET fan drive.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design breakdown -->
     <section class="pd-section">
       <div class="container">
-        <div class="pd-num">B &mdash; DESIGN</div>
-        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:30px;">Four subsystems on one small board.</h2>
-        <div class="feature-grid">
-          <div class="feature-cell">
-            <div class="fc-tag">INPUT</div>
-            <h3>Protected 12&nbsp;V input</h3>
-            <p>Input protection ahead of the regulator so a reversed or noisy 12&nbsp;V supply doesn't take out the rest of the board.</p>
+        <div class="pd-num">C &mdash; DESIGN BREAKDOWN</div>
+        <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:10px;">Four subsystems, one small board.</h2>
+        <p style="color:var(--muted); max-width:60ch; font-size:15px; margin-bottom:10px;">Closer look at each stage, cropped from the schematic sheets above.</p>
+      </div>
+
+      <div class="container pd-grid" style="margin-top:34px;">
+        <div class="pd-copy">
+          <div class="pd-num">INPUT</div>
+          <h2 style="font-size:22px;">Protected 12&nbsp;V input</h2>
+          <p>A fuse and a PMEG4020ER Schottky diode guard against reverse polarity, with an SMAJ14A TVS clamping transients before the bulk and decoupling capacitors that follow. A series resistor and LED give a visible 12&nbsp;V-present indicator.</p>
+        </div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/fan-input-protection.png" alt="12V input protection schematic" />
+          <div class="pd-caption">FIG. 03 &mdash; Fuse, reverse-polarity diode, TVS clamp, and bulk/decoupling capacitance ahead of the regulators.</div>
+        </div>
+      </div>
+
+      <div class="container pd-grid reverse" style="margin-top:60px;">
+        <div class="pd-copy">
+          <div class="pd-num">POWER</div>
+          <h2 style="font-size:22px;">Buck + LDO regulation</h2>
+          <p>An LM2675 synchronous buck converter steps 12&nbsp;V down to 5&nbsp;V for the fan-drive gate circuit, and a TCR2EF33 LDO steps that down further to a clean 3.3&nbsp;V for the STM32 and temperature sensor &mdash; keeping switching noise from the buck stage off the sensitive logic rail.</p>
+        </div>
+        <div class="gallery-stack">
+          <div class="pd-figure">
+            <img data-zoom src="assets/fan-buck-converter.png" alt="12V to 5V buck converter schematic" />
+            <div class="pd-caption">FIG. 04 &mdash; LM2675 buck stage, 12&nbsp;V&rarr;5&nbsp;V.</div>
           </div>
-          <div class="feature-cell">
-            <div class="fc-tag">POWER</div>
-            <h3>Buck regulation</h3>
-            <p>Steps the 12&nbsp;V input down to logic voltage for the STM32 and sensing circuitry.</p>
+          <div class="pd-figure">
+            <img data-zoom src="assets/fan-ldo.png" alt="5V to 3.3V LDO regulator schematic" />
+            <div class="pd-caption">FIG. 05 &mdash; TCR2EF33 LDO, 5&nbsp;V&rarr;3.3&nbsp;V, isolating logic from switching noise.</div>
           </div>
-          <div class="feature-cell">
-            <div class="fc-tag">SENSING</div>
-            <h3>Temperature sensing</h3>
-            <p>Feeds live temperature readings to the STM32, which sets fan speed based on measured conditions rather than a fixed duty cycle.</p>
-          </div>
-          <div class="feature-cell">
-            <div class="fc-tag">DRIVE</div>
-            <h3>MOSFET PWM control</h3>
-            <p>Drives the 6&nbsp;W brushless fan with a MOSFET switching stage under STM32 PWM control, with current fault detection to catch stall or overcurrent conditions.</p>
-          </div>
+        </div>
+      </div>
+
+      <div class="container pd-grid" style="margin-top:60px;">
+        <div class="pd-copy">
+          <div class="pd-num">SENSING</div>
+          <h2 style="font-size:22px;">I&sup2;C temperature sensing</h2>
+          <p>A P3T1755DPZ digital temperature sensor reports over I&sup2;C, with its own ALERT line back to the MCU. The STM32 sets fan speed from the measured temperature rather than a fixed duty cycle, and can react to the sensor's own threshold alert independent of the main control loop.</p>
+        </div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/fan-temp-sense.png" alt="I2C temperature sensor schematic" />
+          <div class="pd-caption">FIG. 06 &mdash; P3T1755DPZ temperature sensor with I&sup2;C pull-ups and ALERT line.</div>
+        </div>
+      </div>
+
+      <div class="container pd-grid reverse" style="margin-top:60px;">
+        <div class="pd-copy">
+          <div class="pd-num">DRIVE</div>
+          <h2 style="font-size:22px;">MOSFET PWM control</h2>
+          <p>The STM32 drives a BSS214N MOSFET through a gate resistor and pull-down, switching the 12&nbsp;V fan rail directly under PWM. Running the fan off 12&nbsp;V rather than the 5&nbsp;V rail keeps the switching current off the same rail that feeds the logic and sensing circuitry.</p>
+        </div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/fan-drive.png" alt="MOSFET fan drive schematic" />
+          <div class="pd-caption">FIG. 07 &mdash; MOSFET low-side switch driving the 6&nbsp;W fan from the 12&nbsp;V rail under PWM.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programming & debug access -->
+    <section class="pd-section">
+      <div class="container pd-grid">
+        <div class="pd-copy">
+          <div class="pd-num">D &mdash; PROGRAMMING &amp; DEBUG ACCESS</div>
+          <h2>Built for bring-up from the start.</h2>
+          <p>An STLINK-V3MINIE-compatible SWD header gives direct programming and debug access to the STM32, with TVS protection on the SWDIO/SWCLK lines so the debug connector doesn't become a weak point once the board is out of the lab.</p>
+        </div>
+        <div class="pd-figure">
+          <img data-zoom src="assets/fan-swd-protection.png" alt="SWD programming header and TVS protection schematic" />
+          <div class="pd-caption">FIG. 08 &mdash; SWD debug header (SWDIO/SWCLK/NRST) with TVS protection on the link lines.</div>
         </div>
       </div>
     </section>
@@ -97,10 +162,10 @@
         <div class="pd-num">LAYOUT &amp; ASSEMBLY</div>
         <h2 style="font-size:clamp(22px,3vw,30px); max-width:640px; margin-bottom:30px;">Photos to follow.</h2>
         <div class="gallery">
-          <div class="pd-figure pending"><div class="pending-inner"><strong>FIG. 02 &mdash; PENDING</strong>PCB layout</div></div>
+          <div class="pd-figure pending"><div class="pending-inner"><strong>FIG. 09 &mdash; PENDING</strong>PCB layout</div></div>
           <div class="gallery-stack">
-            <div class="pd-figure pending"><div class="pending-inner"><strong>FIG. 03 &mdash; PENDING</strong>Assembled board</div></div>
-            <div class="pd-figure pending"><div class="pending-inner"><strong>FIG. 04 &mdash; PENDING</strong>Bring-up on the bench</div></div>
+            <div class="pd-figure pending"><div class="pending-inner"><strong>FIG. 10 &mdash; PENDING</strong>Assembled board</div></div>
+            <div class="pd-figure pending"><div class="pending-inner"><strong>FIG. 11 &mdash; PENDING</strong>Bring-up on the bench</div></div>
           </div>
         </div>
       </div>
@@ -110,12 +175,12 @@
     <section class="pd-section">
       <div class="container pd-grid reverse">
         <div class="pd-copy">
-          <div class="pd-num">C &mdash; VALIDATION</div>
+          <div class="pd-num">E &mdash; VALIDATION</div>
           <h2>Bring-up on the bench, one subsystem at a time.</h2>
-          <p>I validated the power, PWM, and sensing circuitry independently during bring-up: checking regulator output and stability, verifying PWM waveforms into the MOSFET stage, and confirming the temperature-to-speed response, using an oscilloscope to check switching behavior and signal integrity along the way.</p>
+          <p>I'm validating the power, PWM, and sensing circuitry independently during bring-up: checking the LM2675's 5&nbsp;V output and the TCR2EF33's 3.3&nbsp;V output under load, verifying the PWM waveform into the MOSFET gate, and confirming the temperature-to-speed response &mdash; using an oscilloscope to check switching behavior and signal integrity at each stage.</p>
         </div>
         <div class="pd-figure pending">
-          <div class="pending-inner"><strong>FIG. 05 &mdash; PENDING</strong>Oscilloscope capture of PWM drive waveform</div>
+          <div class="pending-inner"><strong>FIG. 12 &mdash; PENDING</strong>Oscilloscope capture of PWM drive waveform</div>
         </div>
       </div>
     </section>
